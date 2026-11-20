@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 48 33% 98%;
+    --foreground: 220 20% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 12%;
+
+    --primary: 38 92% 50%;
+    --primary-foreground: 45 100% 10%;
+
+    --secondary: 48 30% 94%;
+    --secondary-foreground: 38 92% 30%;
+
+    --muted: 48 20% 93%;
+    --muted-foreground: 220 10% 46%;
+
+    --accent: 48 90% 94%;
+    --accent-foreground: 38 92% 30%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 48 20% 88%;
+    --input: 48 20% 88%;
+    --ring: 38 92% 50%;
+
+    --radius: 0.65rem;
+  }
+
+  .dark {
+    --background: 224 25% 8%;
+    --foreground: 48 20% 96%;
+
+    --card: 224 24% 11%;
+    --card-foreground: 48 20% 96%;
+
+    --popover: 224 24% 11%;
+    --popover-foreground: 48 20% 96%;
+
+    --primary: 42 96% 54%;
+    --primary-foreground: 45 100% 8%;
+
+    --secondary: 224 20% 16%;
+    --secondary-foreground: 42 96% 75%;
+
+    --muted: 224 20% 16%;
+    --muted-foreground: 220 15% 60%;
+
+    --accent: 224 25% 18%;
+    --accent-foreground: 42 96% 80%;
+
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 224 20% 18%;
+    --input: 224 20% 18%;
+    --ring: 42 96% 54%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom scrollbar for developer playground */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(180, 150, 80, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.45);
+}
+
+/* Code block styles */
+pre code {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.875rem;
+}
+
+/* Subtle glowing fruit accent */
+.fruit-glow {
+  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.3);
+}
+
+.fruit-border-glow:hover {
+  border-color: rgba(245, 158, 11, 0.6);
+  box-shadow: 0 0 15px -3px rgba(245, 158, 11, 0.2);
+}

@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FruitAI Playground — BYOK AI Developer Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            fruit: {
+              50: "#fffbeb",
+              100: "#fef3c7",
+              200: "#fde68a",
+              300: "#fcd34d",
+              400: "#fbbf24",
+              500: "#f59e0b",
+              600: "#d97706",
+              700: "#b45309",
+              800: "#92400e",
+              900: "#78350f",
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.25); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.5); }
+    .glass-card {
+      background: rgba(18, 24, 38, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-fruit-500 selection:text-slate-950">
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="h-16 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-6 flex items-center justify-between">
+    <!-- Brand Logo -->
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2.5 cursor-pointer" onclick="location.reload()">
+        <!-- FruitAI Citrus SVG Logo -->
+        <svg viewBox="0 0 48 48" fill="none" class="w-8 h-8 drop-shadow-[0_2px_8px_rgba(245,158,11,0.4)]">
+          <defs>
+            <linearGradient id="fGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FDE68A" />
+              <stop offset="45%" stop-color="#F59E0B" />
+              <stop offset="100%" stop-color="#D97706" />
+            </linearGradient>
+            <linearGradient id="sGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+              <stop offset="0%" stop-color="#FFFBEB" />
+              <stop offset="100%" stop-color="#FCD34D" />
+            </linearGradient>
+          </defs>
+          <path d="M 6 24 A 18 18 0 0 0 42 24 Z" fill="url(#fGrad)" stroke="#B45309" stroke-width="1.5" />
+          <path d="M 9 24 A 15 15 0 0 0 39 24 Z" fill="#1E293B" />
+          <path d="M 12 23 A 12 12 0 0 0 17 33 L 23 23 Z" fill="url(#sGrad)" />
+          <path d="M 19 34 A 12 12 0 0 0 29 34 L 24 23 Z" fill="url(#sGrad)" />
+          <path d="M 31 33 A 12 12 0 0 0 36 23 L 25 23 Z" fill="url(#sGrad)" />
+          <circle cx="24" cy="22" r="3" fill="#D97706" />
+          <circle cx="24" cy="22" r="1.5" fill="#FFFBEB" />
+          <path d="M 23 18 C 22 12 28 8 32 9 C 33 13 29 17 25 18 Z" fill="#10B981" />
+        </svg>
+        <span class="font-extrabold text-lg tracking-tight">Fruit<span class="text-fruit-400">AI</span></span>
+      </div>
+      <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-fruit-500/10 text-fruit-400 border border-fruit-500/20 font-semibold uppercase">
+        BYOK Playground
+      </span>
+      <span class="hidden md:inline-block text-xs text-slate-400 font-mono">
+        (Live Server Standalone Edition)
+      </span>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center gap-3">
+      <!-- Active Model Quick Indicator -->
+      <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-xs font-mono">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="nav-active-model">Llama 3.3 70B (Groq)</span>
+      </div>
+
+      <!-- BYOK Key Trigger Button -->
+      <button onclick="openKeyModal()" id="key-status-btn" class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20">
+        <i data-lucide="key" class="w-3.5 h-3.5 text-fruit-400"></i>
+        <span id="key-btn-label">Configure API Key</span>
+      </button>
+
+      <!-- Prompt Library Dropdown Button -->
+      <button onclick="togglePresetMenu()" class="p-2 rounded-xl border border-slate-700 hover:bg-slate-800 text-slate-300 transition-colors" title="Load Starter Prompts">
+        <i data-lucide="book-open" class="w-4 h-4 text-fruit-400"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= NOTIFICATION TOAST ================= -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none p-4 rounded-xl shadow-2xl border text-xs font-semibold flex items-center gap-3 max-w-sm">
+    <i id="toast-icon" data-lucide="info" class="w-4 h-4 shrink-0"></i>
+    <span id="toast-text">Message</span>
+  </div>
+
+  <!-- ================= PRESET TEMPLATES MENU ================= -->
+  <div id="preset-menu" class="hidden absolute right-6 top-16 w-80 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-3 z-40 space-y-2">
+    <div class="text-xs font-bold uppercase tracking-wider text-slate-400 px-2 py-1">Featured Templates</div>
+    <div onclick="loadPreset('zero')" class="p-2.5 rounded-xl hover:bg-slate-800 cursor-pointer text-xs">
+      <div class="font-bold text-fruit-400">Zero-Shot Technical Architect</div>
+      <div class="text-slate-400 text-[11px] mt-0.5">Evaluates distributed systems without demonstrations</div>
+    </div>
+    <div onclick="loadPreset('one')" class="p-2.5 rounded-xl hover:bg-slate-800 cursor-pointer text-xs">
+      <div class="font-bold text-fruit-400">One-Shot Sentiment Classifier</div>
+      <div class="text-slate-400 text-[11px] mt-0.5">Includes 1 exact input/output demonstration</div>
+    </div>
+    <div onclick="loadPreset('few')" class="p-2.5 rounded-xl hover:bg-slate-800 cursor-pointer text-xs">
+      <div class="font-bold text-fruit-400">Few-Shot Query-to-SQL</div>
+      <div class="text-slate-400 text-[11px] mt-0.5">3 demonstration pairs translating natural requests to SQL</div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN 3-PANEL PLAYGROUND LAYOUT ================= -->
+  <div class="flex-1 flex flex-col md:flex-row overflow-hidden h-[calc(100vh-64px)]">
+
+    <!-- ================= LEFT PANEL: MODEL & PARAMETERS ================= -->
+    <aside id="left-panel" class="w-full md:w-80 lg:w-84 border-r border-slate-800 bg-slate-900/60 flex flex-col overflow-y-auto p-4 space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div class="flex items-center gap-2 text-sm font-bold text-slate-200">
+          <i data-lucide="sliders" class="w-4 h-4 text-fruit-400"></i> Model & Parameters
+        </div>
+      </div>
+
+      <!-- Provider & Model Selection -->
+      <div class="space-y-2">
+        <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Provider</label>
+        <select id="select-provider" onchange="onProviderChange()" class="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 outline-none focus:border-fruit-500">
+          <option value="groq">Groq (Ultra-Fast LPU)</option>
+          <option value="openai">OpenAI (Direct Browser)</option>
+          <option value="openrouter">OpenRouter (Unified)</option>
+          <option value="gemini">Google Gemini</option>
+        </select>
+      </div>
+
+      <div class="space-y-2">
+        <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Model</label>
+        <select id="select-model" onchange="onModelChange()" class="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 outline-none focus:border-fruit-500">
+          <!-- Populated dynamically -->
+        </select>
+        <div id="model-desc" class="text-[11px] text-slate-400 leading-relaxed px-1"></div>
+      </div>
+
+      <!-- System Prompt -->
+      <div class="space-y-2 pt-2 border-t border-slate-800">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-bold uppercase tracking-wider text-slate-400">System Prompt</label>
+          <span id="sys-tokens" class="text-[10px] font-mono text-slate-500">0 tok</span>
+        </div>
+        <textarea id="sys-prompt" rows="3" oninput="updateTelemetry()" class="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs font-sans outline-none focus:border-fruit-500 resize-none">You are an expert AI assistant. Provide concise, clear, and insightful answers.</textarea>
+      </div>
+
+      <!-- Temperature Slider -->
+      <div class="space-y-1.5 pt-2 border-t border-slate-800">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-medium text-slate-300">Temperature</span>
+          <span id="temp-val" class="font-mono text-fruit-400 font-bold">0.7</span>
+        </div>
+        <input id="param-temp" type="range" min="0" max="2" step="0.05" value="0.7" oninput="document.getElementById('temp-val').innerText = this.value" class="w-full accent-fruit-500 cursor-pointer" />
+        <div class="flex justify-between text-[10px] text-slate-500">
+          <span>0.0 Precise</span>
+          <span>1.0 Creative</span>
+          <span>2.0 Random</span>
+        </div>
+      </div>
+
+      <!-- Max Tokens -->
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-medium text-slate-300">Max Output Tokens</span>
+          <span id="tokens-val" class="font-mono text-fruit-400 font-bold">2048</span>
+        </div>
+        <input id="param-tokens" type="range" min="128" max="4096" step="128" value="2048" oninput="document.getElementById('tokens-val').innerText = this.value" class="w-full accent-fruit-500 cursor-pointer" />
+      </div>
+
+      <!-- Top P -->
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-medium text-slate-300">Top P</span>
+          <span id="topp-val" class="font-mono text-fruit-400 font-bold">1.0</span>
+        </div>
+        <input id="param-topp" type="range" min="0.05" max="1" step="0.05" value="1.0" oninput="document.getElementById('topp-val').innerText = this.value" class="w-full accent-fruit-500 cursor-pointer" />
+      </div>
+
+      <!-- Next.js Tip Box -->
+      <div class="p-3 rounded-xl bg-fruit-500/10 border border-fruit-500/20 text-[11px] text-slate-300 space-y-1">
+        <div class="font-bold text-fruit-400 flex items-center gap-1.5">
+          <i data-lucide="terminal" class="w-3.5 h-3.5"></i> Running with Next.js:
+        </div>
+        <p>In terminal run: <code class="bg-black/30 px-1 py-0.5 rounded text-fruit-300 font-mono">npm run dev</code> for the full Next.js App Router experience on localhost:3000.</p>
+      </div>
+    </aside>
+
+    <!-- ================= CENTER PANEL: CONVERSATION & CHAT ================= -->
+    <main class="flex-1 flex flex-col bg-slate-950 overflow-hidden">
+      <!-- Toolbar -->
+      <div class="h-12 border-b border-slate-800 bg-slate-900/30 px-4 flex items-center justify-between">
+        <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
+          <i data-lucide="message-square" class="w-4 h-4 text-fruit-400"></i>
+          <span>Multi-Turn Chat</span>
+          <span id="msg-count" class="text-slate-500 font-mono">(1 message)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="clearChat()" class="px-2.5 py-1 rounded-lg border border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs flex items-center gap-1">
+            <i data-lucide="trash-2" class="w-3 h-3"></i> Clear
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages Stream -->
+      <div id="chat-stream" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
+        <!-- Default Starter Message -->
+        <div class="flex flex-col items-end">
+          <div class="max-w-[85%] rounded-2xl p-4 bg-fruit-500/15 border border-fruit-500/25 text-slate-100 rounded-tr-none text-xs sm:text-sm">
+            <div class="text-[10px] font-mono text-slate-400 uppercase font-bold mb-1">You</div>
+            <div>Explain how zero-shot and few-shot prompting differ with concrete examples.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="p-4 border-t border-slate-800 bg-slate-900/40">
+        <div class="relative">
+          <textarea id="user-input" rows="3" oninput="updateTelemetry()" onkeydown="handleKeyDown(event)" placeholder="Ask something or write a prompt (Press Enter to send, Shift+Enter for newline)..." class="w-full p-3.5 pr-28 rounded-2xl bg-slate-900 border border-slate-700 text-xs sm:text-sm text-slate-100 outline-none focus:border-fruit-500 resize-none shadow-inner"></textarea>
+          <div class="absolute right-3 bottom-3 flex items-center gap-2">
+            <button id="run-btn" onclick="sendPrompt()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-fruit-500 hover:bg-fruit-600 text-slate-950 text-xs font-bold shadow-lg shadow-fruit-500/20 transition-all">
+              <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Run
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ================= RIGHT PANEL: PROMPT ANALYSIS & STATS ================= -->
+    <aside id="right-panel" class="w-full md:w-80 lg:w-88 border-l border-slate-800 bg-slate-900/60 flex flex-col overflow-y-auto p-4 space-y-6">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div class="flex items-center gap-2 text-sm font-bold text-slate-200">
+          <i data-lucide="scan-search" class="w-4 h-4 text-fruit-400"></i> Prompt Diagnostics
+        </div>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-fruit-500/10 text-fruit-400 font-bold">100% OFFLINE</span>
+      </div>
+
+      <!-- Detected Technique Card -->
+      <div class="p-4 rounded-2xl bg-gradient-to-br from-fruit-500/15 via-fruit-500/5 to-transparent border border-fruit-500/30 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-fruit-400">Detected Pattern</span>
+          <span id="diag-confidence" class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-fruit-500 text-slate-950">94% Conf.</span>
+        </div>
+        <div id="diag-technique" class="text-xl font-black text-slate-100 capitalize">Zero-Shot Prompting</div>
+        <p id="diag-explanation" class="text-xs text-slate-400 leading-relaxed">
+          The prompt provides task instructions without input-to-output demonstration pairs.
+        </p>
+        <div id="diag-demos" class="text-[11px] font-semibold text-fruit-400 pt-1 border-t border-fruit-500/20">
+          0 Demonstrations detected
+        </div>
+      </div>
+
+      <!-- Quality Score Bar -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-bold text-slate-300">Prompt Quality Score</span>
+          <span id="score-val" class="font-mono font-bold text-fruit-400 text-sm">78 / 100</span>
+        </div>
+        <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+          <div id="score-bar" class="h-full bg-fruit-500 rounded-full transition-all duration-300" style="width: 78%"></div>
+        </div>
+      </div>
+
+      <!-- Execution Telemetry -->
+      <div class="space-y-3 pt-3 border-t border-slate-800">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Performance Telemetry</span>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="text-[10px] text-slate-500 flex items-center gap-1">
+              <i data-lucide="clock" class="w-3 h-3 text-fruit-400"></i> Latency
+            </div>
+            <div id="stat-latency" class="text-base font-bold font-mono text-slate-200 mt-1">—</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="text-[10px] text-slate-500 flex items-center gap-1">
+              <i data-lucide="zap" class="w-3 h-3 text-fruit-400"></i> Speed
+            </div>
+            <div id="stat-speed" class="text-base font-bold font-mono text-slate-200 mt-1">—</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="text-[10px] text-slate-500 flex items-center gap-1">
+              <i data-lucide="layers" class="w-3 h-3 text-fruit-400"></i> Total Tokens
+            </div>
+            <div id="stat-tokens" class="text-base font-bold font-mono text-slate-200 mt-1">—</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="text-[10px] text-slate-500 flex items-center gap-1">
+              <i data-lucide="dollar-sign" class="w-3 h-3 text-fruit-400"></i> Est. Cost
+            </div>
+            <div id="stat-cost" class="text-base font-bold font-mono text-emerald-400 mt-1">$0.0000</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ================= BYOK API KEY MODAL ================= -->
+  <div id="key-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-2xl shadow-2xl p-6 space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-fruit-500/15 border border-fruit-500/30 flex items-center justify-center text-fruit-400 font-bold">
+            <i data-lucide="key" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-100">BYOK API Credentials</h3>
+            <p class="text-xs text-slate-400">Zero Server Storage • Saved Only in Your Browser</p>
+          </div>
+        </div>
+        <button onclick="closeKeyModal()" class="text-slate-400 hover:text-slate-100 text-lg">✕</button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="font-bold text-slate-300 block mb-1">Target Provider</label>
+          <select id="modal-provider" onchange="loadKeyIntoModal()" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-semibold outline-none focus:border-fruit-500">
+            <option value="groq">Groq (gsk_...)</option>
+            <option value="openai">OpenAI (sk-proj-...)</option>
+            <option value="openrouter">OpenRouter (sk-or-v1-...)</option>
+            <option value="gemini">Google Gemini (AIzaSy...)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-300 block mb-1">API Key</label>
+          <input type="password" id="modal-key-input" placeholder="Paste your key here..." class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs outline-none focus:border-fruit-500" />
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-300 block mb-1">Storage Mode</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="p-3 rounded-xl border border-slate-800 hover:border-slate-700 bg-slate-950 flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="storageType" value="local" checked class="accent-fruit-500" />
+              <span>Save on Device</span>
+            </label>
+            <label class="p-3 rounded-xl border border-slate-800 hover:border-slate-700 bg-slate-950 flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="storageType" value="session" class="accent-fruit-500" />
+              <span>Temporary Session</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-300">
+          <strong>Security Notice:</strong> Your key is used directly in your browser. FruitAI never transmits or logs your credentials to any remote database.
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-3 border-t border-slate-800">
+        <button onclick="deleteCurrentKey()" class="px-3 py-1.5 rounded-xl text-rose-400 hover:bg-rose-500/10 border border-rose-500/20 text-xs font-semibold">
+          Delete Key
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="closeKeyModal()" class="px-4 py-2 rounded-xl text-xs font-semibold border border-slate-800 hover:bg-slate-800">
+            Cancel
+          </button>
+          <button onclick="saveKeyFromModal()" class="px-5 py-2 rounded-xl text-xs font-bold bg-fruit-500 hover:bg-fruit-600 text-slate-950 shadow-md">
+            Save Key
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= LOGIC & JAVASCRIPT ================= -->
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Model Registry
+    const MODELS = {
+      groq: [
+        { id: "llama-3.3-70b-versatile", name: "Llama 3.3 70B", desc: "Meta's flagship 70B running at 300+ t/s on Groq LPUs", inputPrice: 0.59, outputPrice: 0.79 },
+        { id: "llama-3.1-8b-instant", name: "Llama 3.1 8B", desc: "Ultra-fast sub-100ms instant model", inputPrice: 0.05, outputPrice: 0.08 },
+        { id: "llama-3.2-11b-vision-preview", name: "Llama 3.2 11B Vision", desc: "Multimodal image reasoning at Groq speed", inputPrice: 0.16, outputPrice: 0.20 },
+        { id: "deepseek-r1-distill-llama-70b", name: "DeepSeek R1 Distill 70B", desc: "Reasoning distilled model", inputPrice: 0.75, outputPrice: 0.99 },
+      ],
+      openai: [
+        { id: "gpt-4o", name: "GPT-4o (Omni)", desc: "OpenAI's flagship multimodal model", inputPrice: 2.50, outputPrice: 10.00 },
+        { id: "gpt-4o-mini", name: "GPT-4o Mini", desc: "Affordable fast intelligence", inputPrice: 0.15, outputPrice: 0.60 },
+      ],
+      openrouter: [
+        { id: "anthropic/claude-3.5-sonnet", name: "Claude 3.5 Sonnet", desc: "Premier coding and nuanced reasoning", inputPrice: 3.00, outputPrice: 15.00 },
+        { id: "meta-llama/llama-3.3-70b-instruct", name: "Llama 3.3 70B Instruct", desc: "High throughput open-weights model", inputPrice: 0.40, outputPrice: 0.40 },
+      ],
+      gemini: [
+        { id: "gemini-1.5-flash", name: "Gemini 1.5 Flash", desc: "Fast multimodal with 1M token context", inputPrice: 0.075, outputPrice: 0.30 },
+        { id: "gemini-1.5-pro", name: "Gemini 1.5 Pro", desc: "2M massive context window", inputPrice: 1.25, outputPrice: 5.00 },
+      ]
+    };
+
+    let chatHistory = [
+      { role: "user", content: "Explain how zero-shot and few-shot prompting differ with concrete examples." }
+    ];
+
+    // On Load
+    window.addEventListener("DOMContentLoaded", () => {
+      onProviderChange();
+      updateKeyStatusUI();
+      updateTelemetry();
+    });
+
+    function onProviderChange() {
+      const p = document.getElementById("select-provider").value;
+      const mSelect = document.getElementById("select-model");
+      mSelect.innerHTML = "";
+      const list = MODELS[p] || [];
+      list.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m.id;
+        opt.innerText = m.name;
+        mSelect.appendChild(opt);
+      });
+      onModelChange();
+    }
+
+    function onModelChange() {
+      const p = document.getElementById("select-provider").value;
+      const mId = document.getElementById("select-model").value;
+      const model = (MODELS[p] || []).find(m => m.id === mId);
+      if (model) {
+        document.getElementById("model-desc").innerText = model.desc;
+        document.getElementById("nav-active-model").innerText = `${model.name} (${p.toUpperCase()})`;
+      }
+      updateKeyStatusUI();
+      updateTelemetry();
+    }
+
+    // ================= BYOK STORAGE =================
+    function getKey(provider) {
+      return sessionStorage.getItem("fruitai_key_" + provider) || localStorage.getItem("fruitai_key_" + provider) || "";
+    }
+
+    function saveKey(provider, key, type) {
+      if (type === "session") {
+        sessionStorage.setItem("fruitai_key_" + provider, key);
+        localStorage.removeItem("fruitai_key_" + provider);
+      } else {
+        localStorage.setItem("fruitai_key_" + provider, key);
+        sessionStorage.removeItem("fruitai_key_" + provider);
+      }
+      updateKeyStatusUI();
+    }
+
+    function removeKey(provider) {
+      sessionStorage.removeItem("fruitai_key_" + provider);
+      localStorage.removeItem("fruitai_key_" + provider);
+      updateKeyStatusUI();
+    }
+
+    function updateKeyStatusUI() {
+      const p = document.getElementById("select-provider").value;
+      const key = getKey(p);
+      const btn = document.getElementById("key-status-btn");
+      const label = document.getElementById("key-btn-label");
+      if (key && key.length > 5) {
+        btn.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20";
+        label.innerText = `${p.toUpperCase()} Key Active`;
+      } else {
+        btn.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20";
+        label.innerText = `Set ${p.toUpperCase()} Key`;
+      }
+    }
+
+    function openKeyModal() {
+      const p = document.getElementById("select-provider").value;
+      document.getElementById("modal-provider").value = p;
+      loadKeyIntoModal();
+      document.getElementById("key-modal").classList.remove("hidden");
+    }
+
+    function closeKeyModal() {
+      document.getElementById("key-modal").classList.add("hidden");
+    }
+
+    function loadKeyIntoModal() {
+      const p = document.getElementById("modal-provider").value;
+      document.getElementById("modal-key-input").value = getKey(p);
+    }
+
+    function saveKeyFromModal() {
+      const p = document.getElementById("modal-provider").value;
+      const key = document.getElementById("modal-key-input").value.trim();
+      const type = document.querySelector('input[name="storageType"]:checked').value;
+      if (!key) {
+        showToast("Please enter an API key", "error");
+        return;
+      }
+      saveKey(p, key, type);
+      closeKeyModal();
+      showToast(`${p.toUpperCase()} API Key Saved`, "success");
+    }
+
+    function deleteCurrentKey() {
+      const p = document.getElementById("modal-provider").value;
+      removeKey(p);
+      document.getElementById("modal-key-input").value = "";
+      showToast(`Key for ${p} removed`, "info");
+    }
+
+    // ================= SIGNATURE PROMPT ANALYSIS =================
+    function extractDemonstrations(text) {
+      const results = [];
+      const ioPattern = /(?:(?:Example|Demo|Case)\s*\d*[:.-]?\s*)?(?:Input|Query|User|Question|Prompt|Q)[:]\s*([^\n\r]+(?:\n(?!(?:Output|Response|Assistant|Answer|A)[:])[^\n\r]+)*)\s*(?:Output|Response|Assistant|Answer|A)[:]\s*([^\n\r]+(?:\n(?!(?:(?:Example|Demo|Case)\s*\d*[:.-]?\s*)?(?:Input|Query|User|Question|Prompt|Q)[:])[^\n\r]+)*)/gi;
+      let match;
+      while ((match = ioPattern.exec(text)) !== null) {
+        const inp = (match[1] || "").trim();
+        const out = (match[2] || "").trim();
+        if (inp && out && !out.match(/^(?:\[insert\]|\.\.\.|\?)$/i)) {
+          results.push({ input: inp, output: out });
+        }
+      }
+      return results;
+    }
+
+    function updateTelemetry() {
+      const sys = document.getElementById("sys-prompt").value;
+      const user = document.getElementById("user-input").value;
+      const combined = (user || (chatHistory[chatHistory.length - 1]?.content || "")) + "\n" + sys;
+
+      // Estimate tokens
+      const estTokens = Math.max(1, Math.ceil(combined.length / 3.8));
+      document.getElementById("sys-tokens").innerText = Math.ceil(sys.length / 3.8) + " tok";
+
+      // Detect demonstrations
+      const demos = extractDemonstrations(combined);
+      const count = demos.length;
+
+      let tech = "Zero-Shot Prompting";
+      let conf = 94;
+      let exp = "The prompt provides task instructions without input-to-output demonstration pairs.";
+
+      if (count === 1) {
+        tech = "One-Shot Prompting";
+        conf = 92;
+        exp = "The prompt contains exactly 1 explicit demonstration pair illustrating input format and desired output.";
+      } else if (count > 1) {
+        tech = "Few-Shot Prompting";
+        conf = 98;
+        exp = `The prompt provides ${count} structured demonstrations establishing an in-context learning pattern.`;
+      }
+
+      document.getElementById("diag-technique").innerText = tech;
+      document.getElementById("diag-confidence").innerText = `${conf}% Conf.`;
+      document.getElementById("diag-explanation").innerText = exp;
+      document.getElementById("diag-demos").innerText = `${count} Demonstration(s) detected`;
+
+      // Quality score
+      let score = 70;
+      if (sys.length > 20) score += 10;
+      if (count > 0) score += 10;
+      if (combined.toLowerCase().includes("json") || combined.toLowerCase().includes("table")) score += 8;
+      score = Math.min(96, score);
+      document.getElementById("score-val").innerText = `${score} / 100`;
+      document.getElementById("score-bar").style.width = `${score}%`;
+    }
+
+    // ================= CHAT & EXECUTION =================
+    async function sendPrompt() {
+      const inputEl = document.getElementById("user-input");
+      const text = inputEl.value.trim();
+      if (!text) return;
+
+      const p = document.getElementById("select-provider").value;
+      const mId = document.getElementById("select-model").value;
+      const key = getKey(p);
+
+      if (!key) {
+        openKeyModal();
+        showToast(`Please enter your ${p.toUpperCase()} API key`, "warning");
+        return;
+      }
+
+      // Add user message
+      chatHistory.push({ role: "user", content: text });
+      inputEl.value = "";
+      renderChat();
+
+      const runBtn = document.getElementById("run-btn");
+      runBtn.disabled = true;
+      runBtn.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i> Running...`;
+      lucide.createIcons();
+
+      const startTime = performance.now();
+
+      try {
+        let assistantReply = "";
+
+        if (p === "groq") {
+          // Direct browser call to Groq
+          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${key}`
+            },
+            body: JSON.stringify({
+              model: mId,
+              messages: [
+                { role: "system", content: document.getElementById("sys-prompt").value },
+                ...chatHistory
+              ],
+              temperature: parseFloat(document.getElementById("param-temp").value),
+              max_tokens: parseInt(document.getElementById("param-tokens").value),
+              top_p: parseFloat(document.getElementById("param-topp").value)
+            })
+          });
+
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error?.message || `HTTP ${res.status}`);
+          }
+          const data = await res.json();
+          assistantReply = data.choices[0]?.message?.content || "";
+        } else if (p === "openai") {
+          // Direct browser call to OpenAI
+          const res = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${key}`
+            },
+            body: JSON.stringify({
+              model: mId,
+              messages: [
+                { role: "system", content: document.getElementById("sys-prompt").value },
+                ...chatHistory
+              ],
+              temperature: parseFloat(document.getElementById("param-temp").value),
+              max_tokens: parseInt(document.getElementById("param-tokens").value),
+            })
+          });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error?.message || `HTTP ${res.status}`);
+          }
+          const data = await res.json();
+          assistantReply = data.choices[0]?.message?.content || "";
+        } else if (p === "openrouter") {
+          const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${key}`
+            },
+            body: JSON.stringify({
+              model: mId,
+              messages: [
+                { role: "system", content: document.getElementById("sys-prompt").value },
+                ...chatHistory
+              ],
+              temperature: parseFloat(document.getElementById("param-temp").value),
+              max_tokens: parseInt(document.getElementById("param-tokens").value),
+            })
+          });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error?.message || `HTTP ${res.status}`);
+          }
+          const data = await res.json();
+          assistantReply = data.choices[0]?.message?.content || "";
+        } else if (p === "gemini") {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mId}:generateContent?key=${encodeURIComponent(key)}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: chatHistory.map(m => ({
+                role: m.role === "assistant" ? "model" : "user",
+                parts: [{ text: m.content }]
+              }))
+            })
+          });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error?.message || `HTTP ${res.status}`);
+          }
+          const data = await res.json();
+          assistantReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        }
+
+        const elapsed = Math.round(performance.now() - startTime);
+        chatHistory.push({ role: "assistant", content: assistantReply });
+        renderChat();
+
+        // Calculate metrics
+        const outTok = Math.ceil(assistantReply.length / 3.8);
+        const inTok = Math.ceil(text.length / 3.8);
+        const totalTok = inTok + outTok;
+        const tps = elapsed > 0 ? (outTok / (elapsed / 1000)).toFixed(1) : 0;
+        const modelDef = (MODELS[p] || []).find(m => m.id === mId);
+        const cost = modelDef ? ((inTok / 1e6) * modelDef.inputPrice + (outTok / 1e6) * modelDef.outputPrice) : 0;
+
+        document.getElementById("stat-latency").innerText = elapsed < 1000 ? `${elapsed}ms` : `${(elapsed / 1000).toFixed(2)}s`;
+        document.getElementById("stat-speed").innerText = `${tps} t/s`;
+        document.getElementById("stat-tokens").innerText = totalTok;
+        document.getElementById("stat-cost").innerText = `$${cost.toFixed(5)}`;
+        showToast("Generation Complete", "success");
+      } catch (err) {
+        showToast(err.message, "error");
+      } finally {
+        runBtn.disabled = false;
+        runBtn.innerHTML = `<i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Run`;
+        lucide.createIcons();
+      }
+    }
+
+    function renderChat() {
+      const stream = document.getElementById("chat-stream");
+      stream.innerHTML = "";
+      document.getElementById("msg-count").innerText = `(${chatHistory.length} message${chatHistory.length > 1 ? "s" : ""})`;
+
+      chatHistory.forEach(msg => {
+        const isUser = msg.role === "user";
+        const div = document.createElement("div");
+        div.className = `flex flex-col ${isUser ? "items-end" : "items-start"}`;
+        div.innerHTML = `
+          <div class="max-w-[85%] rounded-2xl p-4 text-xs sm:text-sm ${
+            isUser
+              ? "bg-fruit-500/15 border border-fruit-500/25 text-slate-100 rounded-tr-none"
+              : "bg-slate-900 border border-slate-800 text-slate-100 rounded-tl-none shadow-md"
+          }">
+            <div class="text-[10px] font-mono text-slate-400 uppercase font-bold mb-1">${isUser ? "You" : "Assistant"}</div>
+            <div class="whitespace-pre-wrap leading-relaxed">${escapeHtml(msg.content)}</div>
+          </div>
+        `;
+        stream.appendChild(div);
+      });
+      stream.scrollTop = stream.scrollHeight;
+      updateTelemetry();
+    }
+
+    function clearChat() {
+      chatHistory = [];
+      renderChat();
+      showToast("Chat cleared", "info");
+    }
+
+    function handleKeyDown(e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendPrompt();
+      }
+    }
+
+    function loadPreset(type) {
+      if (type === "zero") {
+        document.getElementById("user-input").value = "Analyze the trade-offs of microkernel vs monolithic operating system designs. Focus on IPC latency, fault isolation, and scheduling complexity.";
+      } else if (type === "one") {
+        document.getElementById("user-input").value = `Input: "The battery lasts only 2 hours and gets extremely hot."\nOutput: {"sentiment": "negative", "issue": "battery_drain"}\n\nInput: "Screen clarity and speaker sound are top-tier."\nOutput:`;
+      } else if (type === "few") {
+        document.getElementById("user-input").value = `Example 1:\nInput: active users\nOutput: SELECT * FROM users WHERE status = 'active';\n\nExample 2:\nInput: orders over 100 dollars\nOutput: SELECT * FROM orders WHERE amount > 100;\n\nExample 3:\nInput: count pending shipments\nOutput: SELECT COUNT(*) FROM shipments WHERE status = 'pending';\n\nInput: users who joined in November 2026\nOutput:`;
+      }
+      document.getElementById("preset-menu").classList.add("hidden");
+      updateTelemetry();
+      showToast("Loaded preset prompt", "info");
+    }
+
+    function togglePresetMenu() {
+      document.getElementById("preset-menu").classList.toggle("hidden");
+    }
+
+    function showToast(text, type = "info") {
+      const toast = document.getElementById("toast");
+      const label = document.getElementById("toast-text");
+      label.innerText = text;
+
+      if (type === "success") {
+        toast.className = "fixed bottom-5 right-5 z-50 p-4 rounded-xl shadow-2xl border text-xs font-semibold flex items-center gap-3 max-w-sm bg-emerald-950 border-emerald-800 text-emerald-200 transition-all duration-300 translate-y-0 opacity-100";
+      } else if (type === "error") {
+        toast.className = "fixed bottom-5 right-5 z-50 p-4 rounded-xl shadow-2xl border text-xs font-semibold flex items-center gap-3 max-w-sm bg-rose-950 border-rose-800 text-rose-200 transition-all duration-300 translate-y-0 opacity-100";
+      } else {
+        toast.className = "fixed bottom-5 right-5 z-50 p-4 rounded-xl shadow-2xl border text-xs font-semibold flex items-center gap-3 max-w-sm bg-slate-900 border-slate-700 text-slate-100 transition-all duration-300 translate-y-0 opacity-100";
+      }
+
+      setTimeout(() => {
+        toast.classList.add("translate-y-24", "opacity-0");
+      }, 4000);
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+  </script>
+</body>
+</html>

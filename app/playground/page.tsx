@@ -397,31 +397,28 @@ function PlaygroundContent() {
       <div className="md:hidden flex border-b border-border bg-card">
         <button
           onClick={() => setMobileTab("left")}
-          className={`flex-1 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
-            mobileTab === "left"
+          className={`flex-1 py-2.5 text-xs font-semibold border-b-2 transition-colors ${mobileTab === "left"
               ? "border-fruit-500 text-fruit-600 dark:text-fruit-400"
               : "border-transparent text-muted-foreground"
-          }`}
+            }`}
         >
           Model & Params
         </button>
         <button
           onClick={() => setMobileTab("center")}
-          className={`flex-1 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
-            mobileTab === "center"
+          className={`flex-1 py-2.5 text-xs font-semibold border-b-2 transition-colors ${mobileTab === "center"
               ? "border-fruit-500 text-fruit-600 dark:text-fruit-400"
               : "border-transparent text-muted-foreground"
-          }`}
+            }`}
         >
           Playground Chat
         </button>
         <button
           onClick={() => setMobileTab("right")}
-          className={`flex-1 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
-            mobileTab === "right"
+          className={`flex-1 py-2.5 text-xs font-semibold border-b-2 transition-colors ${mobileTab === "right"
               ? "border-fruit-500 text-fruit-600 dark:text-fruit-400"
               : "border-transparent text-muted-foreground"
-          }`}
+            }`}
         >
           Analysis & Stats
         </button>
@@ -431,9 +428,8 @@ function PlaygroundContent() {
       <div className="flex-1 flex overflow-hidden">
         {/* ================= LEFT PANEL: MODEL & PARAMS ================= */}
         <div
-          className={`border-r border-border bg-card flex flex-col transition-all duration-300 ${
-            mobileTab === "left" ? "flex-1" : "hidden md:flex"
-          } ${leftPanelOpen ? "w-full md:w-[320px] lg:w-[340px]" : "w-[48px]"}`}
+          className={`border-r border-border bg-card flex flex-col transition-all duration-300 ${mobileTab === "left" ? "flex-1" : "hidden md:flex"
+            } ${leftPanelOpen ? "w-full md:w-[320px] lg:w-[340px]" : "w-[48px]"}`}
         >
           {leftPanelOpen ? (
             <div className="flex-1 flex flex-col overflow-hidden">
@@ -671,9 +667,8 @@ function PlaygroundContent() {
 
         {/* ================= CENTER PANEL: CHAT & PROMPT ================= */}
         <div
-          className={`flex-1 flex flex-col bg-background overflow-hidden ${
-            mobileTab === "center" ? "flex" : "hidden md:flex"
-          }`}
+          className={`flex-1 flex flex-col bg-background overflow-hidden ${mobileTab === "center" ? "flex" : "hidden md:flex"
+            }`}
         >
           {/* Top Control Bar */}
           <div className="p-3 border-b border-border bg-card/40 flex items-center justify-between gap-2 flex-wrap">
@@ -739,11 +734,10 @@ function PlaygroundContent() {
                   className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl p-4 shadow-sm text-sm space-y-2 ${
-                      isUser
+                    className={`max-w-[85%] rounded-2xl p-4 shadow-sm text-sm space-y-2 ${isUser
                         ? "bg-fruit-500/15 border border-fruit-500/25 text-foreground rounded-tr-none"
                         : "bg-card border border-border text-foreground rounded-tl-none"
-                    }`}
+                      }`}
                   >
                     {/* Header */}
                     <div className="flex items-center justify-between gap-4 text-[10px] font-mono text-muted-foreground mb-1">
@@ -902,9 +896,8 @@ function PlaygroundContent() {
 
         {/* ================= RIGHT PANEL: ANALYSIS, TOKENS & COST ================= */}
         <div
-          className={`border-l border-border bg-card flex flex-col transition-all duration-300 ${
-            mobileTab === "right" ? "flex-1" : "hidden lg:flex"
-          } ${rightPanelOpen ? "w-full md:w-[320px] lg:w-[340px]" : "w-[48px]"}`}
+          className={`border-l border-border bg-card flex flex-col transition-all duration-300 ${mobileTab === "right" ? "flex-1" : "hidden lg:flex"
+            } ${rightPanelOpen ? "w-full md:w-[320px] lg:w-[340px]" : "w-[48px]"}`}
         >
           {rightPanelOpen ? (
             <div className="flex-1 flex flex-col overflow-hidden">

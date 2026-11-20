@@ -381,3 +381,4 @@ function sanitizeErrorMessage(msg: string): string {
     .replace(/(?:gsk_|sk-proj-|sk-ant-|sk-or-v1-|AIzaSy)[A-Za-z0-9_-]{10,}/g, "[REDACTED_API_KEY]")
     .replace(/Bearer\s+[A-Za-z0-9_.-]+/gi, "Bearer [REDACTED]");
 }
+

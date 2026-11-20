@@ -485,3 +485,4 @@ function createEmptyAnalysisResult(): PromptAnalysisResult {
     improvementRationale: "",
   };
 }
+

@@ -100,3 +100,4 @@ export function FruitLogo({ size = "md", showBadge = true }: FruitLogoProps) {
     </Link>
   );
 }
+

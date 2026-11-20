@@ -22,7 +22,7 @@ export const DEFAULT_PARAMETERS: ModelParameters = {
 export const DEFAULT_SETTINGS: UserSettings = {
   theme: "dark",
   defaultProvider: "groq",
-  defaultModel: "llama-3.3-70b-versatile",
+  defaultModel: "llama-3.1-8b-instant",
   storagePreference: "local",
   defaultParameters: DEFAULT_PARAMETERS,
   autoSaveExperiments: true,
@@ -226,3 +226,4 @@ export function clearAllLocalData(): void {
   localStorage.removeItem(TEMPLATES_KEY);
   localStorage.removeItem(SETTINGS_KEY);
 }
+

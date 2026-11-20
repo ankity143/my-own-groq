@@ -144,3 +144,4 @@ SECURITY & PRIVACY DISCLOSURE (BYOK):
 • When requests are proxied to prevent browser CORS blocks, the key is forwarded strictly in-memory for that single request and never logged, cached, or persisted.
 • Notice: Browser-local storage is not hardware-backed secure storage. Malicious browser extensions or XSS attacks could theoretically access stored values. For sensitive keys, choose "Temporary Session Key", which is immediately destroyed when you close the tab.
 `;
+

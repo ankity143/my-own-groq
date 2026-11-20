@@ -187,3 +187,4 @@ export interface UserSettings {
   defaultParameters: ModelParameters;
   autoSaveExperiments: boolean;
 }
+

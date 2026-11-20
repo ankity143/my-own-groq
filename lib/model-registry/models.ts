@@ -56,6 +56,32 @@ export const PROVIDERS_META: Record<
 export const MODEL_REGISTRY: ModelDefinition[] = [
   // --- GROQ ---
   {
+    id: "llama-3.1-8b-instant",
+    name: "Llama 3.1 8B Instant (Recommended)",
+    provider: "groq",
+    contextWindow: 128000,
+    maxOutputTokens: 8192,
+    capabilities: ["text", "tools", "json_mode", "streaming"],
+    pricing: { inputPer1M: 0.05, outputPer1M: 0.08 },
+    speedRating: "Ultra Fast",
+    tokensPerSecEstimate: 750,
+    description: "Groq's premier production instant model. Available on 100% of Groq keys at 750+ tok/s.",
+    isPopular: true,
+  },
+  {
+    id: "llama-3.1-70b-versatile",
+    name: "Llama 3.1 70B Versatile",
+    provider: "groq",
+    contextWindow: 128000,
+    maxOutputTokens: 8192,
+    capabilities: ["text", "tools", "json_mode", "streaming"],
+    pricing: { inputPer1M: 0.59, outputPer1M: 0.79 },
+    speedRating: "Ultra Fast",
+    tokensPerSecEstimate: 280,
+    description: "Meta flagship 70B parameter model with high reasoning capability.",
+    isPopular: true,
+  },
+  {
     id: "llama-3.3-70b-versatile",
     name: "Llama 3.3 70B Versatile",
     provider: "groq",
@@ -65,21 +91,8 @@ export const MODEL_REGISTRY: ModelDefinition[] = [
     pricing: { inputPer1M: 0.59, outputPer1M: 0.79 },
     speedRating: "Ultra Fast",
     tokensPerSecEstimate: 280,
-    description: "Meta's flagship 70B model running at lightning speeds on Groq LPUs.",
-    isPopular: true,
-  },
-  {
-    id: "llama-3.1-8b-instant",
-    name: "Llama 3.1 8B Instant",
-    provider: "groq",
-    contextWindow: 128000,
-    maxOutputTokens: 8192,
-    capabilities: ["text", "tools", "json_mode", "streaming"],
-    pricing: { inputPer1M: 0.05, outputPer1M: 0.08 },
-    speedRating: "Ultra Fast",
-    tokensPerSecEstimate: 750,
-    description: "Instant sub-100ms responses for high-velocity tasks and classification.",
-    isPopular: true,
+    description: "Meta's latest 70B model running on Groq LPUs.",
+    isPopular: false,
   },
   {
     id: "llama-3.2-11b-vision-preview",
@@ -335,3 +348,4 @@ export function calculateEstimatedCost(
   const outputCost = (outputTokens / 1_000_000) * model.pricing.outputPer1M;
   return inputCost + outputCost;
 }
+

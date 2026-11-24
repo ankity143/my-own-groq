@@ -71,7 +71,7 @@ export function Header({
         <div className="hidden sm:flex items-center gap-2 text-xs">
           <span className="font-semibold text-foreground flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-fruit-500 animate-pulse" />
-            FruitAI
+            <span className="tracking-tight"><b className="font-black text-foreground">A</b><span className="font-normal">nk</span><b className="font-black text-fruit-500 dark:text-fruit-400">I</b><span className="font-normal">t</span></span>
           </span>
           <span className="text-muted-foreground">/</span>
           <span className="text-muted-foreground font-mono">{activeModelName}</span>

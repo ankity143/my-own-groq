@@ -132,7 +132,7 @@ export function ApiKeyModal({
                 </span>
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Your keys remain strictly in your browser. FruitAI never persists or shares them.
+                Your keys remain strictly in your browser. AnkIt never persists or shares them.
               </p>
             </div>
           </div>

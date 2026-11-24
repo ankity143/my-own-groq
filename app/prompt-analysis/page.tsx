@@ -131,7 +131,7 @@ export default function PromptAnalysisPage() {
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-fruit-500/15 border border-fruit-500/30 text-fruit-700 dark:text-fruit-300 text-xs font-semibold mb-2">
             <Sparkles className="w-3.5 h-3.5 text-fruit-500" />
-            FruitAI Signature Engine • 100% Client-Side Local Classifier
+            AnkIt Signature Engine • 100% Client-Side Local Classifier
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold text-foreground tracking-tight">
             Prompt Analysis & Diagnostics
@@ -399,7 +399,7 @@ export default function PromptAnalysisPage() {
               <Sparkles className="w-5 h-5 text-fruit-500" /> Side-by-Side Prompt Optimization
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Compare the original prompt with FruitAI's structurally enhanced revision.
+              Compare the original prompt with AnkIt's structurally enhanced revision.
             </p>
           </div>
 

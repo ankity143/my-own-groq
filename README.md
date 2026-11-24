@@ -1,4 +1,4 @@
-# 🍋 FruitAI Playground
+# 🍋 AnkIt Playground
 
 > **The Next-Generation AI Experimentation & Prompt Engineering Platform**  
 > Inspired by Groq Playground, engineered with an original developer-first identity, deep prompt diagnostics, and a strict **Bring Your Own Key (BYOK)** architecture.
@@ -13,12 +13,12 @@
 
 ## 🌟 Overview & Product Vision
 
-**FruitAI** is a production-ready, web-based AI experimentation platform designed for developers, students, researchers, and AI enthusiasts. It allows you to test system prompts, experiment with model parameters, run multi-turn chats, compare models side-by-side, analyze zero/one/few-shot prompts offline, and track token costs in real time.
+**AnkIt** is a production-ready, web-based AI experimentation platform designed for developers, students, researchers, and AI enthusiasts. It allows you to test system prompts, experiment with model parameters, run multi-turn chats, compare models side-by-side, analyze zero/one/few-shot prompts offline, and track token costs in real time.
 
 ### 🛡️ The Core BYOK Guarantee (Bring Your Own Key)
-- **Zero Server Credentials**: FruitAI **never** requires, stores, or persists personal API keys on the server or in Vercel environment variables.
+- **Zero Server Credentials**: AnkIt **never** requires, stores, or persists personal API keys on the server or in Vercel environment variables.
 - **Visitor Isolation**: Every visitor provides their own API keys stored strictly in their local browser (`sessionStorage` for temporary sessions or `localStorage` for persistent device storage).
-- **Publicly Deployable & Sharable**: You can deploy FruitAI once on Vercel and share the public URL with anyone. Each user runs requests using their own credentials without risking your quota or seeing your data.
+- **Publicly Deployable & Sharable**: You can deploy AnkIt once on Vercel and share the public URL with anyone. Each user runs requests using their own credentials without risking your quota or seeing your data.
 
 ---
 
@@ -39,7 +39,7 @@
   - Accurate query cost calculations using a maintained model pricing catalog.
   - Inline prompt technique indicator.
 
-### 2. 🔬 FruitAI Signature Feature: Prompt Analysis Engine
+### 2. 🔬 AnkIt Signature Feature: Prompt Analysis Engine
 - **Accurate Offline Classifier**:
   - **Zero-Shot**: Accurately recognizes instruction-only prompts without input-output demonstrations.
   - **One-Shot**: Detects exactly one concrete input-output demonstration pair.
@@ -126,7 +126,7 @@ npm test
 
 ## 🚢 Deploying to Vercel
 
-FruitAI is pre-configured for seamless zero-config deployment on Vercel:
+AnkIt is pre-configured for seamless zero-config deployment on Vercel:
 
 1. Push this repository to your GitHub account:
    ```bash

@@ -79,7 +79,7 @@ async function handleOpenAICompatibleStream(
   } else if (provider === "openrouter") {
     endpoint = "https://openrouter.ai/api/v1/chat/completions";
     headers["HTTP-Referer"] = "https://fruitai.app";
-    headers["X-Title"] = "FruitAI Playground";
+    headers["X-Title"] = "AnkIt Playground";
   }
 
   // Format messages

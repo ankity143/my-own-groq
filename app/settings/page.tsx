@@ -67,13 +67,13 @@ export default function SettingsPage() {
     const data = {
       settings,
       timestamp: Date.now(),
-      appName: "FruitAI Playground",
+      appName: "AnkIt Playground",
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `fruitai-settings-${Date.now()}.json`;
+    a.download = `ankit-settings-${Date.now()}.json`;
     a.click();
     toast.success("Settings Exported", "Downloaded JSON backup.");
   };
@@ -87,7 +87,7 @@ export default function SettingsPage() {
           Environment & Client Configuration
         </div>
         <h1 className="text-2xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-          FruitAI Settings
+          <b className="font-black text-foreground">A</b><span className="font-normal">nk</span><b className="font-black text-fruit-500 dark:text-fruit-400">I</b><span className="font-normal">t</span> Settings
         </h1>
         <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-2xl">
           Configure default inference parameters, manage your BYOK keys, and inspect privacy controls.
@@ -302,11 +302,11 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* About FruitAI */}
+      {/* About AnkIt */}
       <div className="p-6 rounded-2xl bg-muted/30 border border-border space-y-2 text-xs text-muted-foreground">
-        <h3 className="font-bold text-foreground text-sm">About FruitAI</h3>
+        <h3 className="font-bold text-foreground text-sm">About <b>A</b>nk<b>I</b>t</h3>
         <p className="leading-relaxed">
-          FruitAI is a zero-telemetry, developer-first AI experimentation platform built with Next.js, React, and Tailwind CSS.
+          <b>A</b>nk<b>I</b>t is a zero-telemetry, developer-first AI experimentation platform built with Next.js, React, and Tailwind CSS.
           Every user brings their own API credentials, stored exclusively in the browser. No shared server database or centralized key storage exists.
         </p>
         <div className="pt-2 text-[11px] font-mono">

@@ -1,0 +1,112 @@
+﻿S&AI – Open-Source Project: Task Assignment & Submission Guidelines
+Hello Everyone!
+Your individual tasks for the S&AI Open-Source Project have been assigned. Each student has been assigned 10 tasks under the GitHub organisation S-AI-Projects.
+Please go through the instructions below carefully and follow the prescribed workflow while completing your tasks.
+1. How to Find Your Assigned Tasks
+1. Open the shared S&AI Project - Student Task Sheet.
+2. Navigate to the My Tasks worksheet.
+3. Find your record using your Enrollment Number or Name. You can use Ctrl + F / Cmd + F or apply the available column filters.
+4. Check your assigned:
+   * GitHub repository (Org Repository)
+   * Working Branch
+   * Individual task links (Task 1 to Task 10)
+5. You can also click on All my issues to access a GitHub page containing all your 10 assigned tasks.
+2. Understand Each Assigned Task
+* Open each assigned GitHub issue link.
+* Read the task description and understand the objective before starting.
+* Follow the implementation steps and requirements mentioned in the issue.
+* Pay special attention to the "Done when" checklist. It specifies the conditions that must be fulfilled for the task to be considered complete.
+* Make sure you understand the expected outcome before making any changes.
+3. GitHub Workflow – How to Work and Submit
+Please follow this workflow strictly:
+1. Work on the Assigned Repository: Use the repository mentioned in the Org Repository column under the S-AI-Projects organisation.
+2. Use Your Assigned Branch: Make all your changes in the working branch specified in the Working Branch column. Do not work directly on the main branch. Your branch name should look like student/<URN>/<Task ID>. You must have unique branches for each task ID.
+3. Complete the Task: Implement the required changes according to the GitHub issue description and its acceptance criteria.
+4. Create a Pull Request (PR): Once your task is completed, create a Pull Request against the corresponding repository in the S-AI-Projects organisation.
+5. Follow the Prescribed PR Format: Every Pull Request must follow the PR template provided in Section 4.
+6. Link Your PR to the Issue: Make sure you add the relevant Pull Request link to the corresponding GitHub issue.
+7. Repeat for All Tasks: Follow the same process for all 10 assigned tasks. Keep each Pull Request focused on one task.
+4. Mandatory Pull Request (PR) Format
+Every Pull Request must follow the format given below. Make sure all relevant sections are properly filled in.
+Copy and use the following template while creating your PR:
+Description
+<!-- Briefly explain what this PR does and why the change is needed. -->
+Related Issue
+<!-- Link the related issue, if applicable. -->
+Fixes: #issue-number (e.g., Fixes: #2323)
+Type of Change
+<!-- Select at least one. -->
+* Bug Fix
+* New Feature
+* UI/UX Improvement
+* Performance Improvement
+* Tests
+* Documentation
+* Refactoring / Maintenance
+* CI/CD
+Changes Made
+<!-- Briefly list the main changes introduced in this PR. -->
+Screenshots / Recordings
+<!-- If your changes affect the UI, attach before and after screenshots or recordings. -->
+Testing
+<!-- Explain how you tested your changes and mention any relevant test commands. -->
+Checklist
+* I have tested my changes locally.
+* I have added or updated tests, if needed.
+* I have updated documentation, if needed.
+* I have followed the project's coding guidelines.
+* I have run the relevant tests and checks.
+* I have addressed previous review feedback, if applicable.
+Additional Notes
+<!-- Share any other information that might help reviewers. -->
+Important: Following the prescribed PR format is mandatory and will be considered as part of the evaluation.
+5. Project Evaluation Rubric
+Total Marks: 20 | Total Assigned Tasks: 10
+Each task carries 2 marks, distributed as follows:
+Evaluation Criteria
+	Marks per Task
+	Pull Request submitted in the prescribed format
+	1
+	Correct implementation of the assigned task
+	1
+	Total per task
+	2
+	Overall Evaluation:
+* 10 tasks × 2 marks = 20 marks.
+* 1 mark will be awarded for submitting the Pull Request in the prescribed format.
+* 1 mark will be awarded for correctly implementing the assigned task as per its requirements and acceptance criteria.
+Please Note:
+* All 10 tasks will be evaluated individually.
+* Merely creating a Pull Request does not guarantee full marks. The implementation must also be correct.
+* Ensure that every PR addresses its corresponding GitHub issue and fulfils the task requirements.
+* Incomplete or improperly formatted PRs may lose marks under the PR format component.
+6. Important Guidelines to Keep in Mind
+* Work only on your assigned repository under the S-AI-Projects organisation.
+* Use your assigned working branch for all changes.
+* Do not submit your assignment Pull Requests to the original upstream repository.
+* Keep each Pull Request specific to one assigned task.
+* Ensure that your implementation satisfies the requirements and the "Done when" checklist.
+* Follow the prescribed PR format for every task.
+* Verify your changes before creating a Pull Request.
+* Maintain clean and organised code/documentation wherever applicable.
+* Do not wait until the last day to start working on your tasks.
+7. Final Submission Deadline
+23rd November 2026
+All 10 assigned tasks must be completed and submitted through their respective GitHub Pull Requests by the above deadline.
+Late Submission Penalty:
+We use an exponential decay function to calculate the penalty. Please review the graph below very carefully.
+  
+
+8. Facing Any Issues?
+If you face any difficulties during the project, such as:
+* Incorrect student details or task assignments.
+* Issues accessing your assigned repository or working branch.
+* GitHub issue links not working.
+* Technical difficulties while implementing or submitting your tasks.
+You can reach out to any of the following instructors for assistance on Slack as well as email:
+1. Abhishek Singh (abhishek.singh@newtonschool.co) 
+2. Ankush Bisht (ankush.bisht@newtonschool.co) 
+3. Raghav Khandelwal (raghav.khandelwal@newtonschool.co) 
+4. Shreyas Malewar (shreyas.malewar@newtonschool.co)
+Please make sure to clarify your doubts well in advance rather than waiting until the submission deadline.
+All the best!

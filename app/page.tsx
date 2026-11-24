@@ -68,7 +68,7 @@ export default function DashboardPage() {
           </h1>
 
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Welcome to <strong className="text-foreground">FruitAI</strong> — the professional playground for prompt
+            Welcome to <strong className="text-foreground tracking-tight"><b className="font-black text-foreground">A</b><span className="font-normal">nk</span><b className="font-black text-fruit-500 dark:text-fruit-400">I</b><span className="font-normal">t</span></strong> — the professional playground for prompt
             engineering, multi-turn testing, zero/few-shot prompt analysis, and model cost comparison. Enter your own
             key to begin, or explore the prompt analyzer completely offline.
           </p>

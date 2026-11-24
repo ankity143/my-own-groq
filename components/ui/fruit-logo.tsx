@@ -87,8 +87,11 @@ export function FruitLogo({ size = "md", showBadge = true }: FruitLogoProps) {
 
       <div className="flex flex-col">
         <div className="flex items-center gap-1.5">
-          <span className={`font-bold tracking-tight ${textSizes[size]} text-foreground font-sans`}>
-            Fruit<span className="text-fruit-500 dark:text-fruit-400">AI</span>
+          <span className={`tracking-tight ${textSizes[size]} text-foreground font-sans`}>
+            <b className="font-black text-foreground">A</b>
+            <span className="font-normal">nk</span>
+            <b className="font-black text-fruit-500 dark:text-fruit-400">I</b>
+            <span className="font-normal">t</span>
           </span>
           {showBadge && (
             <span className="text-[10px] uppercase font-mono font-semibold px-1.5 py-0.5 rounded bg-fruit-500/10 text-fruit-600 dark:text-fruit-400 border border-fruit-500/20">

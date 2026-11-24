@@ -1069,7 +1069,7 @@ export default function PlaygroundPage() {
     <Suspense
       fallback={
         <div className="flex-1 flex items-center justify-center p-8 text-muted-foreground text-sm">
-          Loading FruitAI Playground...
+          Loading AnkIt Playground...
         </div>
       }
     >

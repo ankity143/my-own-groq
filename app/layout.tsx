@@ -3,7 +3,7 @@ import "./globals.css";
 import { AppShell } from "@/components/layout/app-shell";
 
 export const metadata: Metadata = {
-  title: "FruitAI Playground — Next-Gen AI Experimentation & BYOK Platform",
+  title: "AnkIt Playground — Next-Gen AI Experimentation & BYOK Platform",
   description:
     "Professional AI developer playground with Bring Your Own Key (BYOK) architecture. Experiment with Groq, OpenAI, Gemini, Claude, and OpenRouter, analyze zero-shot/few-shot prompts, and compare AI models.",
   keywords: [

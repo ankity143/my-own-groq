@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FruitAI Playground — BYOK AI Developer Platform</title>
+  <title>AnkIt Playground — BYOK AI Developer Platform</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons CDN -->
@@ -33,10 +34,24 @@
   </script>
   <style>
     /* Custom scrollbar */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.25); border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.5); }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(245, 158, 11, 0.25);
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(245, 158, 11, 0.5);
+    }
+
     .glass-card {
       background: rgba(18, 24, 38, 0.7);
       backdrop-filter: blur(12px);
@@ -44,10 +59,13 @@
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-fruit-500 selection:text-slate-950">
+
+<body
+  class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-fruit-500 selection:text-slate-950">
 
   <!-- ================= TOP NAVIGATION BAR ================= -->
-  <header class="h-16 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-6 flex items-center justify-between">
+  <header
+    class="h-16 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-6 flex items-center justify-between">
     <!-- Brand Logo -->
     <div class="flex items-center gap-3">
       <div class="flex items-center gap-2.5 cursor-pointer" onclick="location.reload()">
@@ -73,9 +91,10 @@
           <circle cx="24" cy="22" r="1.5" fill="#FFFBEB" />
           <path d="M 23 18 C 22 12 28 8 32 9 C 33 13 29 17 25 18 Z" fill="#10B981" />
         </svg>
-        <span class="font-extrabold text-lg tracking-tight">Fruit<span class="text-fruit-400">AI</span></span>
+        <span class="text-xl tracking-tight"><b class="font-black text-white text-2xl">A</b><span class="font-normal text-slate-200">nk</span><b class="font-black text-fruit-400 text-2xl">I</b><span class="font-normal text-slate-200">t</span></span>
       </div>
-      <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-fruit-500/10 text-fruit-400 border border-fruit-500/20 font-semibold uppercase">
+      <span
+        class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-fruit-500/10 text-fruit-400 border border-fruit-500/20 font-semibold uppercase">
         BYOK Playground
       </span>
       <span class="hidden md:inline-block text-xs text-slate-400 font-mono">
@@ -86,32 +105,38 @@
     <!-- Right Controls -->
     <div class="flex items-center gap-3">
       <!-- Active Model Quick Indicator -->
-      <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-xs font-mono">
+      <div
+        class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-xs font-mono">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span id="nav-active-model">Llama 3.3 70B (Groq)</span>
       </div>
 
       <!-- BYOK Key Trigger Button -->
-      <button onclick="openKeyModal()" id="key-status-btn" class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20">
+      <button onclick="openKeyModal()" id="key-status-btn"
+        class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20">
         <i data-lucide="key" class="w-3.5 h-3.5 text-fruit-400"></i>
         <span id="key-btn-label">Configure API Key</span>
       </button>
 
       <!-- Prompt Library Dropdown Button -->
-      <button onclick="togglePresetMenu()" class="p-2 rounded-xl border border-slate-700 hover:bg-slate-800 text-slate-300 transition-colors" title="Load Starter Prompts">
+      <button onclick="togglePresetMenu()"
+        class="p-2 rounded-xl border border-slate-700 hover:bg-slate-800 text-slate-300 transition-colors"
+        title="Load Starter Prompts">
         <i data-lucide="book-open" class="w-4 h-4 text-fruit-400"></i>
       </button>
     </div>
   </header>
 
   <!-- ================= NOTIFICATION TOAST ================= -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none p-4 rounded-xl shadow-2xl border text-xs font-semibold flex items-center gap-3 max-w-sm">
+  <div id="toast"
+    class="fixed bottom-5 right-5 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none p-4 rounded-xl shadow-2xl border text-xs font-semibold flex items-center gap-3 max-w-sm">
     <i id="toast-icon" data-lucide="info" class="w-4 h-4 shrink-0"></i>
     <span id="toast-text">Message</span>
   </div>
 
   <!-- ================= PRESET TEMPLATES MENU ================= -->
-  <div id="preset-menu" class="hidden absolute right-6 top-16 w-80 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-3 z-40 space-y-2">
+  <div id="preset-menu"
+    class="hidden absolute right-6 top-16 w-80 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-3 z-40 space-y-2">
     <div class="text-xs font-bold uppercase tracking-wider text-slate-400 px-2 py-1">Featured Templates</div>
     <div onclick="loadPreset('zero')" class="p-2.5 rounded-xl hover:bg-slate-800 cursor-pointer text-xs">
       <div class="font-bold text-fruit-400">Zero-Shot Technical Architect</div>
@@ -131,7 +156,8 @@
   <div class="flex-1 flex flex-col md:flex-row overflow-hidden h-[calc(100vh-64px)]">
 
     <!-- ================= LEFT PANEL: MODEL & PARAMETERS ================= -->
-    <aside id="left-panel" class="w-full md:w-80 lg:w-84 border-r border-slate-800 bg-slate-900/60 flex flex-col overflow-y-auto p-4 space-y-5">
+    <aside id="left-panel"
+      class="w-full md:w-80 lg:w-84 border-r border-slate-800 bg-slate-900/60 flex flex-col overflow-y-auto p-4 space-y-5">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
         <div class="flex items-center gap-2 text-sm font-bold text-slate-200">
           <i data-lucide="sliders" class="w-4 h-4 text-fruit-400"></i> Model & Parameters
@@ -141,7 +167,8 @@
       <!-- Provider & Model Selection -->
       <div class="space-y-2">
         <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Provider</label>
-        <select id="select-provider" onchange="onProviderChange()" class="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 outline-none focus:border-fruit-500">
+        <select id="select-provider" onchange="onProviderChange()"
+          class="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 outline-none focus:border-fruit-500">
           <option value="groq">Groq (Ultra-Fast LPU)</option>
           <option value="openai">OpenAI (Direct Browser)</option>
           <option value="openrouter">OpenRouter (Unified)</option>
@@ -152,16 +179,21 @@
       <div class="space-y-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Model</label>
-          <button type="button" onclick="fetchLiveModels()" class="text-[11px] text-fruit-400 hover:text-fruit-300 hover:underline flex items-center gap-1 font-semibold" title="Fetch live models available for your API key">
+          <button type="button" onclick="fetchLiveModels()"
+            class="text-[11px] text-fruit-400 hover:text-fruit-300 hover:underline flex items-center gap-1 font-semibold"
+            title="Fetch live models available for your API key">
             <i data-lucide="refresh-cw" class="w-3 h-3"></i> Sync Models
           </button>
         </div>
-        <select id="select-model" onchange="onModelChange()" class="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 outline-none focus:border-fruit-500">
+        <select id="select-model" onchange="onModelChange()"
+          class="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 outline-none focus:border-fruit-500">
           <!-- Populated dynamically -->
         </select>
         <div id="model-desc" class="text-[11px] text-slate-400 leading-relaxed px-1"></div>
         <div class="pt-1">
-          <input type="text" id="custom-model-input" placeholder="Or enter custom model ID (e.g. llama-3.1-8b-instant)" onchange="onCustomModelChange()" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs font-mono text-slate-300 outline-none focus:border-fruit-500" />
+          <input type="text" id="custom-model-input" placeholder="Or enter custom model ID (e.g. llama-3.1-8b-instant)"
+            onchange="onCustomModelChange()"
+            class="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs font-mono text-slate-300 outline-none focus:border-fruit-500" />
         </div>
       </div>
 
@@ -171,7 +203,8 @@
           <label class="text-xs font-bold uppercase tracking-wider text-slate-400">System Prompt</label>
           <span id="sys-tokens" class="text-[10px] font-mono text-slate-500">0 tok</span>
         </div>
-        <textarea id="sys-prompt" rows="3" oninput="updateTelemetry()" class="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs font-sans outline-none focus:border-fruit-500 resize-none">You are an expert AI assistant. Provide concise, clear, and insightful answers.</textarea>
+        <textarea id="sys-prompt" rows="3" oninput="updateTelemetry()"
+          class="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs font-sans outline-none focus:border-fruit-500 resize-none">You are an expert AI assistant. Provide concise, clear, and insightful answers.</textarea>
       </div>
 
       <!-- Temperature Slider -->
@@ -180,7 +213,9 @@
           <span class="font-medium text-slate-300">Temperature</span>
           <span id="temp-val" class="font-mono text-fruit-400 font-bold">0.7</span>
         </div>
-        <input id="param-temp" type="range" min="0" max="2" step="0.05" value="0.7" oninput="document.getElementById('temp-val').innerText = this.value" class="w-full accent-fruit-500 cursor-pointer" />
+        <input id="param-temp" type="range" min="0" max="2" step="0.05" value="0.7"
+          oninput="document.getElementById('temp-val').innerText = this.value"
+          class="w-full accent-fruit-500 cursor-pointer" />
         <div class="flex justify-between text-[10px] text-slate-500">
           <span>0.0 Precise</span>
           <span>1.0 Creative</span>
@@ -194,7 +229,9 @@
           <span class="font-medium text-slate-300">Max Output Tokens</span>
           <span id="tokens-val" class="font-mono text-fruit-400 font-bold">2048</span>
         </div>
-        <input id="param-tokens" type="range" min="128" max="4096" step="128" value="2048" oninput="document.getElementById('tokens-val').innerText = this.value" class="w-full accent-fruit-500 cursor-pointer" />
+        <input id="param-tokens" type="range" min="128" max="4096" step="128" value="2048"
+          oninput="document.getElementById('tokens-val').innerText = this.value"
+          class="w-full accent-fruit-500 cursor-pointer" />
       </div>
 
       <!-- Top P -->
@@ -203,7 +240,9 @@
           <span class="font-medium text-slate-300">Top P</span>
           <span id="topp-val" class="font-mono text-fruit-400 font-bold">1.0</span>
         </div>
-        <input id="param-topp" type="range" min="0.05" max="1" step="0.05" value="1.0" oninput="document.getElementById('topp-val').innerText = this.value" class="w-full accent-fruit-500 cursor-pointer" />
+        <input id="param-topp" type="range" min="0.05" max="1" step="0.05" value="1.0"
+          oninput="document.getElementById('topp-val').innerText = this.value"
+          class="w-full accent-fruit-500 cursor-pointer" />
       </div>
 
       <!-- Next.js Tip Box -->
@@ -211,7 +250,8 @@
         <div class="font-bold text-fruit-400 flex items-center gap-1.5">
           <i data-lucide="terminal" class="w-3.5 h-3.5"></i> Running with Next.js:
         </div>
-        <p>In terminal run: <code class="bg-black/30 px-1 py-0.5 rounded text-fruit-300 font-mono">npm run dev</code> for the full Next.js App Router experience on localhost:3000.</p>
+        <p>In terminal run: <code class="bg-black/30 px-1 py-0.5 rounded text-fruit-300 font-mono">npm run dev</code>
+          for the full Next.js App Router experience on localhost:3000.</p>
       </div>
     </aside>
 
@@ -225,7 +265,8 @@
           <span id="msg-count" class="text-slate-500 font-mono">(1 message)</span>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="clearChat()" class="px-2.5 py-1 rounded-lg border border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs flex items-center gap-1">
+          <button onclick="clearChat()"
+            class="px-2.5 py-1 rounded-lg border border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs flex items-center gap-1">
             <i data-lucide="trash-2" class="w-3 h-3"></i> Clear
           </button>
         </div>
@@ -235,7 +276,8 @@
       <div id="chat-stream" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
         <!-- Default Starter Message -->
         <div class="flex flex-col items-end">
-          <div class="max-w-[85%] rounded-2xl p-4 bg-fruit-500/15 border border-fruit-500/25 text-slate-100 rounded-tr-none text-xs sm:text-sm">
+          <div
+            class="max-w-[85%] rounded-2xl p-4 bg-fruit-500/15 border border-fruit-500/25 text-slate-100 rounded-tr-none text-xs sm:text-sm">
             <div class="text-[10px] font-mono text-slate-400 uppercase font-bold mb-1">You</div>
             <div>Explain how zero-shot and few-shot prompting differ with concrete examples.</div>
           </div>
@@ -245,9 +287,12 @@
       <!-- Input Area -->
       <div class="p-4 border-t border-slate-800 bg-slate-900/40">
         <div class="relative">
-          <textarea id="user-input" rows="3" oninput="updateTelemetry()" onkeydown="handleKeyDown(event)" placeholder="Ask something or write a prompt (Press Enter to send, Shift+Enter for newline)..." class="w-full p-3.5 pr-28 rounded-2xl bg-slate-900 border border-slate-700 text-xs sm:text-sm text-slate-100 outline-none focus:border-fruit-500 resize-none shadow-inner"></textarea>
+          <textarea id="user-input" rows="3" oninput="updateTelemetry()" onkeydown="handleKeyDown(event)"
+            placeholder="Ask something or write a prompt (Press Enter to send, Shift+Enter for newline)..."
+            class="w-full p-3.5 pr-28 rounded-2xl bg-slate-900 border border-slate-700 text-xs sm:text-sm text-slate-100 outline-none focus:border-fruit-500 resize-none shadow-inner"></textarea>
           <div class="absolute right-3 bottom-3 flex items-center gap-2">
-            <button id="run-btn" onclick="sendPrompt()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-fruit-500 hover:bg-fruit-600 text-slate-950 text-xs font-bold shadow-lg shadow-fruit-500/20 transition-all">
+            <button id="run-btn" onclick="sendPrompt()"
+              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-fruit-500 hover:bg-fruit-600 text-slate-950 text-xs font-bold shadow-lg shadow-fruit-500/20 transition-all">
               <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Run
             </button>
           </div>
@@ -256,19 +301,24 @@
     </main>
 
     <!-- ================= RIGHT PANEL: PROMPT ANALYSIS & STATS ================= -->
-    <aside id="right-panel" class="w-full md:w-80 lg:w-88 border-l border-slate-800 bg-slate-900/60 flex flex-col overflow-y-auto p-4 space-y-6">
+    <aside id="right-panel"
+      class="w-full md:w-80 lg:w-88 border-l border-slate-800 bg-slate-900/60 flex flex-col overflow-y-auto p-4 space-y-6">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
         <div class="flex items-center gap-2 text-sm font-bold text-slate-200">
           <i data-lucide="scan-search" class="w-4 h-4 text-fruit-400"></i> Prompt Diagnostics
         </div>
-        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-fruit-500/10 text-fruit-400 font-bold">100% OFFLINE</span>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-fruit-500/10 text-fruit-400 font-bold">100%
+          OFFLINE</span>
       </div>
 
       <!-- Detected Technique Card -->
-      <div class="p-4 rounded-2xl bg-gradient-to-br from-fruit-500/15 via-fruit-500/5 to-transparent border border-fruit-500/30 space-y-2">
+      <div
+        class="p-4 rounded-2xl bg-gradient-to-br from-fruit-500/15 via-fruit-500/5 to-transparent border border-fruit-500/30 space-y-2">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold uppercase tracking-wider text-fruit-400">Detected Pattern</span>
-          <span id="diag-confidence" class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-fruit-500 text-slate-950">94% Conf.</span>
+          <span id="diag-confidence"
+            class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-fruit-500 text-slate-950">94%
+            Conf.</span>
         </div>
         <div id="diag-technique" class="text-xl font-black text-slate-100 capitalize">Zero-Shot Prompting</div>
         <p id="diag-explanation" class="text-xs text-slate-400 leading-relaxed">
@@ -286,7 +336,8 @@
           <span id="score-val" class="font-mono font-bold text-fruit-400 text-sm">78 / 100</span>
         </div>
         <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
-          <div id="score-bar" class="h-full bg-fruit-500 rounded-full transition-all duration-300" style="width: 78%"></div>
+          <div id="score-bar" class="h-full bg-fruit-500 rounded-full transition-all duration-300" style="width: 78%">
+          </div>
         </div>
       </div>
 
@@ -324,11 +375,13 @@
   </div>
 
   <!-- ================= BYOK API KEY MODAL ================= -->
-  <div id="key-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+  <div id="key-modal"
+    class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
     <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-2xl shadow-2xl p-6 space-y-5">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
         <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-fruit-500/15 border border-fruit-500/30 flex items-center justify-center text-fruit-400 font-bold">
+          <div
+            class="w-9 h-9 rounded-xl bg-fruit-500/15 border border-fruit-500/30 flex items-center justify-center text-fruit-400 font-bold">
             <i data-lucide="key" class="w-4 h-4"></i>
           </div>
           <div>
@@ -342,7 +395,8 @@
       <div class="space-y-4 text-xs">
         <div>
           <label class="font-bold text-slate-300 block mb-1">Target Provider</label>
-          <select id="modal-provider" onchange="loadKeyIntoModal()" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-semibold outline-none focus:border-fruit-500">
+          <select id="modal-provider" onchange="loadKeyIntoModal()"
+            class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-semibold outline-none focus:border-fruit-500">
             <option value="groq">Groq (gsk_...)</option>
             <option value="openai">OpenAI (sk-proj-...)</option>
             <option value="openrouter">OpenRouter (sk-or-v1-...)</option>
@@ -352,17 +406,20 @@
 
         <div>
           <label class="font-bold text-slate-300 block mb-1">API Key</label>
-          <input type="password" id="modal-key-input" placeholder="Paste your key here..." class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs outline-none focus:border-fruit-500" />
+          <input type="password" id="modal-key-input" placeholder="Paste your key here..."
+            class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs outline-none focus:border-fruit-500" />
         </div>
 
         <div>
           <label class="font-bold text-slate-300 block mb-1">Storage Mode</label>
           <div class="grid grid-cols-2 gap-2">
-            <label class="p-3 rounded-xl border border-slate-800 hover:border-slate-700 bg-slate-950 flex items-center gap-2 cursor-pointer">
+            <label
+              class="p-3 rounded-xl border border-slate-800 hover:border-slate-700 bg-slate-950 flex items-center gap-2 cursor-pointer">
               <input type="radio" name="storageType" value="local" checked class="accent-fruit-500" />
               <span>Save on Device</span>
             </label>
-            <label class="p-3 rounded-xl border border-slate-800 hover:border-slate-700 bg-slate-950 flex items-center gap-2 cursor-pointer">
+            <label
+              class="p-3 rounded-xl border border-slate-800 hover:border-slate-700 bg-slate-950 flex items-center gap-2 cursor-pointer">
               <input type="radio" name="storageType" value="session" class="accent-fruit-500" />
               <span>Temporary Session</span>
             </label>
@@ -370,19 +427,23 @@
         </div>
 
         <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-300">
-          <strong>Security Notice:</strong> Your key is used directly in your browser. FruitAI never transmits or logs your credentials to any remote database.
+          <strong>Security Notice:</strong> Your key is used directly in your browser. <b>A</b>nk<b>I</b>t never transmits or logs
+          your credentials to any remote database.
         </div>
       </div>
 
       <div class="flex items-center justify-between pt-3 border-t border-slate-800">
-        <button onclick="deleteCurrentKey()" class="px-3 py-1.5 rounded-xl text-rose-400 hover:bg-rose-500/10 border border-rose-500/20 text-xs font-semibold">
+        <button onclick="deleteCurrentKey()"
+          class="px-3 py-1.5 rounded-xl text-rose-400 hover:bg-rose-500/10 border border-rose-500/20 text-xs font-semibold">
           Delete Key
         </button>
         <div class="flex items-center gap-2">
-          <button onclick="closeKeyModal()" class="px-4 py-2 rounded-xl text-xs font-semibold border border-slate-800 hover:bg-slate-800">
+          <button onclick="closeKeyModal()"
+            class="px-4 py-2 rounded-xl text-xs font-semibold border border-slate-800 hover:bg-slate-800">
             Cancel
           </button>
-          <button onclick="saveKeyFromModal()" class="px-5 py-2 rounded-xl text-xs font-bold bg-fruit-500 hover:bg-fruit-600 text-slate-950 shadow-md">
+          <button onclick="saveKeyFromModal()"
+            class="px-5 py-2 rounded-xl text-xs font-bold bg-fruit-500 hover:bg-fruit-600 text-slate-950 shadow-md">
             Save Key
           </button>
         </div>
@@ -860,10 +921,9 @@
         const div = document.createElement("div");
         div.className = `flex flex-col ${isUser ? "items-end" : "items-start"}`;
         div.innerHTML = `
-          <div class="max-w-[85%] rounded-2xl p-4 text-xs sm:text-sm ${
-            isUser
-              ? "bg-fruit-500/15 border border-fruit-500/25 text-slate-100 rounded-tr-none"
-              : "bg-slate-900 border border-slate-800 text-slate-100 rounded-tl-none shadow-md"
+          <div class="max-w-[85%] rounded-2xl p-4 text-xs sm:text-sm ${isUser
+            ? "bg-fruit-500/15 border border-fruit-500/25 text-slate-100 rounded-tr-none"
+            : "bg-slate-900 border border-slate-800 text-slate-100 rounded-tl-none shadow-md"
           }">
             <div class="text-[10px] font-mono text-slate-400 uppercase font-bold mb-1">${isUser ? "You" : "Assistant"}</div>
             <div class="whitespace-pre-wrap leading-relaxed">${escapeHtml(msg.content)}</div>
@@ -928,5 +988,5 @@
     }
   </script>
 </body>
-</html>
 
+</html>

@@ -1,7 +1,7 @@
 import assert from "assert";
 
 console.log("==========================================");
-console.log("🧪 RUNNING FRUITAI SUITE OF AUTOMATED TESTS");
+console.log("🧪 RUNNING AnkIt SUITE OF AUTOMATED TESTS");
 console.log("==========================================\n");
 
 // 1. Mock classifier logic for isolated testing

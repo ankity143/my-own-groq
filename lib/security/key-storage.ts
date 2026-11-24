@@ -48,7 +48,7 @@ export function getStoredKey(provider: ProviderId): StoredApiKey | null {
       };
     }
   } catch (err) {
-    console.warn(`[FruitAI Security] Unable to read storage for provider ${provider}:`, err);
+    console.warn(`[AnkIt Security] Unable to read storage for provider ${provider}:`, err);
   }
 
   return null;
@@ -83,7 +83,7 @@ export function saveStoredKey(
     // Update list of configured providers
     trackConfiguredProvider(provider, true);
   } catch (err) {
-    console.error(`[FruitAI Security] Error writing key for provider ${provider}:`, err);
+    console.error(`[AnkIt Security] Error writing key for provider ${provider}:`, err);
     throw new Error("Failed to save API key to browser storage. Ensure storage quota is available.");
   }
 }
@@ -95,7 +95,7 @@ export function removeStoredKey(provider: ProviderId): void {
     localStorage.removeItem(`${LOCAL_STORAGE_PREFIX}${provider}`);
     trackConfiguredProvider(provider, false);
   } catch (err) {
-    console.warn(`[FruitAI Security] Error removing key for ${provider}:`, err);
+    console.warn(`[AnkIt Security] Error removing key for ${provider}:`, err);
   }
 }
 
@@ -140,7 +140,7 @@ export function isProviderConfigured(provider: ProviderId): boolean {
 export const SECURITY_DISCLOSURE = `
 SECURITY & PRIVACY DISCLOSURE (BYOK):
 • All API keys are stored exclusively on your device (sessionStorage or browser-local storage).
-• FruitAI does NOT maintain a user database and never sends your keys to a persistent server.
+• AnkIt does NOT maintain a user database and never sends your keys to a persistent server.
 • When requests are proxied to prevent browser CORS blocks, the key is forwarded strictly in-memory for that single request and never logged, cached, or persisted.
 • Notice: Browser-local storage is not hardware-backed secure storage. Malicious browser extensions or XSS attacks could theoretically access stored values. For sensitive keys, choose "Temporary Session Key", which is immediately destroyed when you close the tab.
 `;
